@@ -11,18 +11,21 @@ jobs:
       - name: Push a file to our repository
         run: |
           pwd
-          ls -a 
+          ls -a
           git init
-          git remote add origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" 
+          git remote add origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git config --global user.email "my-bot@bot.com"
           git config --global user.name "my-bot"
           git fetch
           git checkout master
           git branch --set-upstream-to=origin/master
           git pull
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run pytest and push results
+        run: |
           pytest >> log_pytest.txt
           ls -a
           git add .
           git commit -m "random file from action"
           git push
-
